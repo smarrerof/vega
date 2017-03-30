@@ -1,18 +1,13 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.Webpack;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using WebApplicationBasic.Data;
-using AutoMapper;
+﻿
+ASP.NET MVC core dependencies have been added to the project.
+However you may still need to do make changes to your project.
+1. Add Scaffolding CLI tool to the project:
+    <ItemGroup>
+        <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+    </ItemGroup>
 
-
-namespace WebApplicationBasic
-{
-    public class Startup
-    {
+2. Suggested changes to Startup class:
+    2.1 Add a constructor:
         public IConfigurationRoot Configuration { get; }
 
         public Startup(IHostingEnvironment env)
@@ -24,18 +19,15 @@ namespace WebApplicationBasic
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+    2.2 Add MVC services:
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<VegaDbContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("Default")));
-            services.AddAutoMapper(typeof(Startup));
-            services.AddMvc();            
-        }
+            services.AddMvc();
+       }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    2.3 Configure web app to use use Configuration and use MVC routing:
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -44,9 +36,6 @@ namespace WebApplicationBasic
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
-                    HotModuleReplacement = true
-                });
             }
             else
             {
@@ -60,11 +49,5 @@ namespace WebApplicationBasic
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
             });
         }
-    }
-}
