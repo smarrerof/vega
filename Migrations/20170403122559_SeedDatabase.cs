@@ -27,7 +27,7 @@ namespace Vega.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DELETE FROM Makes"); // Cascade deletion
+            migrationBuilder.Sql("DELETE FROM Makes WHERE Name IN ('Make1', 'Make2', 'Make3')"); // Cascade deletion
         }
     }
 }
