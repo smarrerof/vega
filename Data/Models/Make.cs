@@ -1,16 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplicationBasic.Data.Models
 {
+    [Table("Makes")]
     public class Make
     {
-        [Key]
-        public int IdMake { get; set; }
+        public int Id { get; set; }
+
+        [StringLength(255)]
+        [Required]
         public string Name { get; set; }
-        public List<Model> Models { get; set; }
+
+        public ICollection<Model> Models { get; set; }
+
+        public Make()
+        {
+            Models = new Collection<Model>();
+        }
     }
 }

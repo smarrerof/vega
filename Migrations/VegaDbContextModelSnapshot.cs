@@ -18,49 +18,56 @@ namespace Vega.Migrations
 
             modelBuilder.Entity("WebApplicationBasic.Data.Models.Feature", b =>
                 {
-                    b.Property<int>("IdFeature")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255);
 
-                    b.HasKey("IdFeature");
+                    b.HasKey("Id");
 
                     b.ToTable("Features");
                 });
 
             modelBuilder.Entity("WebApplicationBasic.Data.Models.Make", b =>
                 {
-                    b.Property<int>("IdMake")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255);
 
-                    b.HasKey("IdMake");
+                    b.HasKey("Id");
 
                     b.ToTable("Makes");
                 });
 
             modelBuilder.Entity("WebApplicationBasic.Data.Models.Model", b =>
                 {
-                    b.Property<int>("IdModel")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("MakeIdMake");
+                    b.Property<int>("MakeId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255);
 
-                    b.HasKey("IdModel");
+                    b.HasKey("Id");
 
-                    b.HasIndex("MakeIdMake");
+                    b.HasIndex("MakeId");
 
                     b.ToTable("Models");
                 });
 
             modelBuilder.Entity("WebApplicationBasic.Data.Models.Model", b =>
                 {
-                    b.HasOne("WebApplicationBasic.Data.Models.Make")
+                    b.HasOne("WebApplicationBasic.Data.Models.Make", "Make")
                         .WithMany("Models")
-                        .HasForeignKey("MakeIdMake");
+                        .HasForeignKey("MakeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }
