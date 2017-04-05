@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplicationBasic.Data.Models
@@ -11,5 +13,12 @@ namespace WebApplicationBasic.Data.Models
         [StringLength(255)]
         [Required]
         public string Name { get; set; }
+
+        public ICollection<VehicleFeature> FeatureVehicles { get; set; }
+
+        public Feature()
+        {
+            FeatureVehicles = new Collection<VehicleFeature>();
+        }
     }
 }

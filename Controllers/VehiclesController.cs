@@ -10,24 +10,29 @@ using WebApplicationBasic.Data.Models;
 namespace Vega.Controllers
 {
     [Produces("application/json")]
-    [Route("api/makes")]
-    public class MakesController : Controller
+    [Route("api/vehicles")]
+    public class VehiclesController : Controller
     {
         readonly VegaDbContext _context;
         readonly IMapper _mapper;
 
-        public MakesController(VegaDbContext context, IMapper mapper)
+        public VehiclesController(VegaDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        // GET: api/makes
-        [HttpGet]
-        public IEnumerable<MakeDto> GetMakes()
+        // POST: api/makes
+        [HttpPost]
+        public VehicleDto Post([FromBody] VehicleDto dto)
         {
-            var makes = _context.Makes.Include(m => m.Models).ToList();
-            return _mapper.Map<List<Make>, List<MakeDto>>(makes);
+            Vehicle vehicle = new Vehicle();
+            _mapper.Map(dto, vehicle);
+
+            _context.Vehicles.Add(vehicle);
+            _context.SaveChanges();
+
+            return _mapper.Map<Vehicle, VehicleDto>(vehicle);
         }
     }
 }

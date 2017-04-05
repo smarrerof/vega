@@ -9,6 +9,19 @@ namespace WebApplicationBasic.Data
 
         public DbSet<Feature> Features { get; set; }
         public DbSet<Make> Makes { get; set; }
-        public DbSet<Model> Models { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<Vehicle>()
+                .HasOne(m => m.Make)
+                .WithMany(n => n.Vehicles)
+                .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Vehicle>()
+                .HasOne(m => m.Model)
+                .WithMany(n => n.Vehicles)
+                .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Restrict);
+
+        }
     }
 }

@@ -23,11 +23,16 @@ namespace Vega.Migrations
             migrationBuilder.Sql("INSERT INTO Models (Name, MakeId) VALUES ('Make3-ModelA', (SELECT ID FROM Makes WHERE Name='Make3'))");
             migrationBuilder.Sql("INSERT INTO Models (Name, MakeId) VALUES ('Make3-ModelB', (SELECT ID FROM Makes WHERE Name='Make3'))");
             migrationBuilder.Sql("INSERT INTO Models (Name, MakeId) VALUES ('Make3-ModelC', (SELECT ID FROM Makes WHERE Name='Make3'))");
+
+            migrationBuilder.Sql("INSERT INTO Features (Name) VALUES ('Feature1')");
+            migrationBuilder.Sql("INSERT INTO Features (Name) VALUES ('Feature2')");
+            migrationBuilder.Sql("INSERT INTO Features (Name) VALUES ('Feature3')");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql("DELETE FROM Makes WHERE Name IN ('Make1', 'Make2', 'Make3')"); // Cascade deletion
+            migrationBuilder.Sql("DELETE FROM Makes WHERE Name IN ('Feature1', 'Feature2', 'Feature3')");
         }
     }
 }

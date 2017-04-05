@@ -26,7 +26,7 @@ namespace Vega.Controllers
         public IEnumerable<FeatureDto> GetMakes()
         {
             var features = _context.Features.ToList();
-            return Mapper.Map<List<Feature>, List<FeatureDto>>(features);
+            return _mapper.Map<List<Feature>, List<FeatureDto>>(features);
         }
     }
 }

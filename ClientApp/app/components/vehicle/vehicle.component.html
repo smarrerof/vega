@@ -1,0 +1,49 @@
+<h2>New vehicle</h2>
+<form class="form-group" #vehicleForm="ngForm">
+    <div class="form-group">
+        <label for="make">Make</label>
+        <select class="form-control" id="make" name="make" required [(ngModel)]="vehicle.makeId" (change)="onSelectMake($event.target.value)">
+            <option *ngFor="let make of makes" [value]="make.id">{{make.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="model">Models</label>
+        <select class="form-control" id="model" name="model" required [(ngModel)]="vehicle.modelId">
+            <option *ngFor="let model of models" [value]="model.id">{{model.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="isRegistered">Is this vehicle registered?</label>
+        <div class="checkbox">        
+            <label>
+                <input type="radio" name="isRegistered" [value]="true" [checked]="isRegistered ? true : null" (change)="onIsRegisteredChange($event.target)"> Yes
+            </label>
+            <label>
+                <input type="radio" name="isRegistered" [value]="false" [checked]="isRegistered ? null : true" (change)="onIsRegisteredChange($event.target)"> No
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="features">Features</label>
+        <div class="checkbox" *ngFor="let feature of features">
+            <label>
+                <input type="checkbox" name="features" [value]="feature.id" [checked]='vehicle.features.indexOf(feature.id) >= 0' (change)="onFeatureChange($event.target)" >{{ feature.name }} 
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="contactName">Contact name</label>
+        <input type="text" class="form-control" id="contactName" name="contactName" placeholder="Contact name" required [(ngModel)]="vehicle.contactName">
+    </div>
+    <div class="form-group">
+        <label for="contactPhone">Contact phone</label>
+        <input type="text" class="form-control" id="contactPhone" name="contactPhone" placeholder="Contact phone" [(ngModel)]="vehicle.contactPhone">
+    </div>
+    <div class="form-group">
+        <label for="contactEmail">Contact email</label>
+        <input type="text" class="form-control" id="contactEmail" name="contactEmail" placeholder="Contact email" [(ngModel)]="vehicle.contactEmail">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-default" type="submit" (click)="onSubmit(vehicleForm)">Save</button>
+    </div>
+</form>

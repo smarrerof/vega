@@ -14,11 +14,15 @@ namespace WebApplicationBasic.Data.Models
         [Required]
         public string Name { get; set; }
 
+        // Navigation properties
         public ICollection<Model> Models { get; set; }
+
+        public ICollection<Vehicle> Vehicles { get; set; }
 
         public Make()
         {
             Models = new Collection<Model>();
+            Vehicles = new Collection<Vehicle>();
         }
     }
 }
