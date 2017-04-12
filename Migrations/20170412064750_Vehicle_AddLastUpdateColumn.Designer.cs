@@ -8,9 +8,10 @@ using WebApplicationBasic.Data;
 namespace Vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    partial class VegaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170412064750_Vehicle_AddLastUpdateColumn")]
+    partial class Vehicle_AddLastUpdateColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -67,7 +68,8 @@ namespace Vega.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ContactEmail");
+                    b.Property<string>("ContactEmail")
+                        .HasMaxLength(255);
 
                     b.Property<string>("ContactName")
                         .HasMaxLength(255);

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplicationBasic.Data.Dtos
 {
@@ -9,20 +11,22 @@ namespace WebApplicationBasic.Data.Dtos
 
         public int MakeId { get; set; }
 
+        [Required]
         public int ModelId { get; set; }
 
         public bool IsRegistered { get; set; }
 
         public ICollection<int> Features { get; set; }
 
+        [StringLength(255)]
         public string ContactName { get; set; }
 
+        [StringLength(255)]
         public string ContactPhone { get; set; }
 
         public string ContactEmail { get; set; }
 
-        // Navigation properties
-        
+        public DateTime LastUpdate { get; set; }
 
         public VehicleDto()
         {

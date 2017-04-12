@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,6 +13,7 @@ namespace WebApplicationBasic.Data.Models
 
         public int MakeId { get; set; }
 
+        [Required]
         public int ModelId { get; set; }
 
         public bool IsRegistered { get; set; }
@@ -24,8 +26,9 @@ namespace WebApplicationBasic.Data.Models
         [StringLength(255)]
         public string ContactPhone { get; set; }
 
-        [StringLength(255)]
         public string ContactEmail { get; set; }
+
+        public DateTime LastUpdate { get; set; }
         
         // Navigation properties
         public Make Make { get; set; }
