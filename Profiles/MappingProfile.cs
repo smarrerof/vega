@@ -9,6 +9,7 @@ namespace WebApplicationBasic.Profiles
     {
         public MappingProfile()
         {
+            // Domain to DTOs
             CreateMap<Feature, FeatureDto>();
             CreateMap<Make, MakeDto>();
             CreateMap<Model, ModelDto>();
@@ -16,15 +17,23 @@ namespace WebApplicationBasic.Profiles
                 .ForMember(
                     dest => dest.Features,
                     opt => opt.MapFrom(
-                        so => so.VehicleFeatures.Select(m => m.FeatureId)));
+                        so => so.Features.Select(m => m.FeatureId)));
 
+            // DTOs to Domain
             CreateMap<VehicleDto, Vehicle>()
-                .ForMember(
-                    dest => dest.VehicleFeatures,
-                    opt => opt.MapFrom(
-                        so => so.Features.Select(m => new VehicleFeature() {
-                            FeatureId = m
-                        })));
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Features, opt => opt.Ignore())
+                .AfterMap((vr, v) => {
+                    // Remove unselected features
+                    var removedFeatures = v.Features.Where(f => !vr.Features.Contains(f.FeatureId)).ToList();
+                    foreach (var f in removedFeatures)
+                        v.Features.Remove(f);
+
+                    // Add new features
+                    var addedFeatures = vr.Features.Where(id => !v.Features.Any(f => f.FeatureId == id)).Select(id => new VehicleFeature { FeatureId = id }).ToList();
+                    foreach (var f in addedFeatures)
+                        v.Features.Add(f);
+                });
         }
     }
 }

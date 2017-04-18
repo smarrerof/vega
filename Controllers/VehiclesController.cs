@@ -1,12 +1,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebApplicationBasic.Data;
 using WebApplicationBasic.Data.Dtos;
 using WebApplicationBasic.Data.Models;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Vega.Controllers
 {
@@ -23,52 +24,52 @@ namespace Vega.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/vehicle/1
+        // GET: api/vehicles/1
         [HttpGet("{id}")]
-        public IActionResult GetVehicle([FromRoute] int id)
+        public async Task<IActionResult> GetVehicle([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var vehicle = _context.Vehicles.SingleOrDefault(m => m.Id == id);
+            var vehicle = await _context.Vehicles.Include(m => m.Features).SingleOrDefaultAsync(m => m.Id == id);
 
             if (vehicle == null)
                 return NotFound();
 
-            return Ok(_mapper.Map<Vehicle, VehicleDto>(vehicle));
+            var result = _mapper.Map<Vehicle, VehicleDto>(vehicle);
+            return Ok(result);
         }
 
-        // GET: api/vehicle
+        // GET: api/vehicles
+        [HttpGet]
         public IActionResult GetVehicles()
         {
-            return Ok(_mapper.Map<List<Vehicle>, List<VehicleDto>>(_context.Vehicles.ToList()));
+            var result = _mapper.Map<List<Vehicle>, List<VehicleDto>>(_context.Vehicles.ToList());
+            return Ok(result);
         }
 
-        // POST: api/vehicle
+        // POST: api/vehicles
         [HttpPost]
-        public IActionResult Post([FromBody] VehicleDto dto)
+        public async Task<IActionResult> CreateVehicle([FromBody] VehicleDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            
-            Vehicle vehicle = new Vehicle();
-            _mapper.Map(dto, vehicle);
+                        
+            var vehicle =_mapper.Map<VehicleDto, Vehicle>(dto);
             vehicle.LastUpdate = DateTime.Now.ToUniversalTime();
 
             _context.Vehicles.Add(vehicle);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return Ok(_mapper.Map<Vehicle, VehicleDto>(vehicle));
+            var result = _mapper.Map<Vehicle, VehicleDto>(vehicle);
+            return Ok(result);
         }
 
-        // PUT: api/vehicle
-        [HttpPut]
-        public IActionResult Put([FromBody] VehicleDto dto)
+        // PUT: api/vehicles/1
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateVehicle(int id, [FromBody] VehicleDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            Vehicle vehicle =_context.Vehicles.SingleOrDefault(m => m.Id == dto.Id);
+            Vehicle vehicle = await _context.Vehicles.Include(m => m.Features).SingleOrDefaultAsync(m => m.Id == id);
 
             if (vehicle == null)
                 return NotFound();
@@ -76,9 +77,25 @@ namespace Vega.Controllers
             _mapper.Map(dto, vehicle);
             vehicle.LastUpdate = DateTime.Now.ToUniversalTime();
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return Ok(_mapper.Map<Vehicle, VehicleDto>(vehicle));
+            var result = _mapper.Map<Vehicle, VehicleDto>(vehicle);
+            return Ok(result);
+        }
+
+        // DELETE: api/vehicles/1
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteVehicle(int id)
+        {
+            Vehicle vehicle = await _context.Vehicles.FindAsync(id);
+
+            if (vehicle == null)
+                return NotFound();
+
+            _context.Remove(vehicle);
+            await _context.SaveChangesAsync();
+
+            return Ok(id);
         }
     }
 }

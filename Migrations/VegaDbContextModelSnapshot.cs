@@ -67,12 +67,15 @@ namespace Vega.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ContactEmail");
+                    b.Property<string>("ContactEmail")
+                        .HasMaxLength(255);
 
                     b.Property<string>("ContactName")
+                        .IsRequired()
                         .HasMaxLength(255);
 
                     b.Property<string>("ContactPhone")
+                        .IsRequired()
                         .HasMaxLength(255);
 
                     b.Property<bool>("IsRegistered");
@@ -94,20 +97,15 @@ namespace Vega.Migrations
 
             modelBuilder.Entity("WebApplicationBasic.Data.Models.VehicleFeature", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("VehicleId");
 
                     b.Property<int>("FeatureId");
 
-                    b.Property<int>("VehicleId");
-
-                    b.HasKey("Id");
+                    b.HasKey("VehicleId", "FeatureId");
 
                     b.HasIndex("FeatureId");
 
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("VehicleFeature");
+                    b.ToTable("VehicleFeatures");
                 });
 
             modelBuilder.Entity("WebApplicationBasic.Data.Models.Model", b =>

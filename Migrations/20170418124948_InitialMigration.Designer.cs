@@ -8,8 +8,8 @@ using WebApplicationBasic.Data;
 namespace Vega.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    [Migration("20170412064750_Vehicle_AddLastUpdateColumn")]
-    partial class Vehicle_AddLastUpdateColumn
+    [Migration("20170418124948_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -72,9 +72,11 @@ namespace Vega.Migrations
                         .HasMaxLength(255);
 
                     b.Property<string>("ContactName")
+                        .IsRequired()
                         .HasMaxLength(255);
 
                     b.Property<string>("ContactPhone")
+                        .IsRequired()
                         .HasMaxLength(255);
 
                     b.Property<bool>("IsRegistered");
@@ -96,20 +98,15 @@ namespace Vega.Migrations
 
             modelBuilder.Entity("WebApplicationBasic.Data.Models.VehicleFeature", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("VehicleId");
 
                     b.Property<int>("FeatureId");
 
-                    b.Property<int>("VehicleId");
-
-                    b.HasKey("Id");
+                    b.HasKey("VehicleId", "FeatureId");
 
                     b.HasIndex("FeatureId");
 
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("VehicleFeature");
+                    b.ToTable("VehicleFeatures");
                 });
 
             modelBuilder.Entity("WebApplicationBasic.Data.Models.Model", b =>

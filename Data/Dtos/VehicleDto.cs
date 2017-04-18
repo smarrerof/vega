@@ -11,19 +11,21 @@ namespace WebApplicationBasic.Data.Dtos
 
         public int MakeId { get; set; }
 
-        [Required]
         public int ModelId { get; set; }
 
         public bool IsRegistered { get; set; }
 
         public ICollection<int> Features { get; set; }
 
+        [Required]
         [StringLength(255)]
         public string ContactName { get; set; }
 
+        [Required]
         [StringLength(255)]
         public string ContactPhone { get; set; }
 
+        [StringLength(255)]
         public string ContactEmail { get; set; }
 
         public DateTime LastUpdate { get; set; }
