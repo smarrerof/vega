@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using vega.Data;
 using vega.Data.Dtos;
 using vega.Data.Models;
 using vega.Data.Interfaces;
@@ -14,7 +13,7 @@ namespace Vega.Controllers
     [Route("api/vehicles")]
     public class VehiclesController : Controller
     {
-        readonly VegaDbContext _context;
+        //readonly VegaDbContext _context;
         readonly IUnitOfWork _unitOfWork;
         readonly IMapper _mapper;
 
