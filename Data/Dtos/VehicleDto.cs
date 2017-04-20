@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApplicationBasic.Data.Dtos
+namespace vega.Data.Dtos
 {
     public class VehicleDto
     {
@@ -11,7 +11,11 @@ namespace WebApplicationBasic.Data.Dtos
 
         public int MakeId { get; set; }
 
+        public MakeDto Make { get; set; }
+
         public int ModelId { get; set; }
+
+        public ModelDto Model { get; set; }
 
         public bool IsRegistered { get; set; }
 

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using WebApplicationBasic.Data.Models;
+using vega.Data.Models;
 
-namespace WebApplicationBasic.Data
+namespace vega.Data
 {
     public class VegaDbContext : DbContext 
     {

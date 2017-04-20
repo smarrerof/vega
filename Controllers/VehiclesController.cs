@@ -2,12 +2,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using WebApplicationBasic.Data;
-using WebApplicationBasic.Data.Dtos;
-using WebApplicationBasic.Data.Models;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using vega.Data;
+using vega.Data.Dtos;
+using vega.Data.Models;
+using vega.Data.Interfaces;
 
 namespace Vega.Controllers
 {
@@ -16,11 +15,13 @@ namespace Vega.Controllers
     public class VehiclesController : Controller
     {
         readonly VegaDbContext _context;
+        readonly IUnitOfWork _unitOfWork;
         readonly IMapper _mapper;
 
-        public VehiclesController(VegaDbContext context, IMapper mapper)
+        public VehiclesController(/*VegaDbContext context, */IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            //_context = context;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -28,7 +29,8 @@ namespace Vega.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle([FromRoute] int id)
         {
-            var vehicle = await _context.Vehicles.Include(m => m.Features).SingleOrDefaultAsync(m => m.Id == id);
+            //var vehicle = await _context.Vehicles.Include(m => m.Make).Include(m => m.Model).Include(m => m.Features).SingleOrDefaultAsync(m => m.Id == id);
+            var vehicle = await _unitOfWork.Vehicles.GetExtendedVehicle(id);
 
             if (vehicle == null)
                 return NotFound();
@@ -39,9 +41,11 @@ namespace Vega.Controllers
 
         // GET: api/vehicles
         [HttpGet]
-        public IActionResult GetVehicles()
+        public async Task<IActionResult> GetVehicles()
         {
-            var result = _mapper.Map<List<Vehicle>, List<VehicleDto>>(_context.Vehicles.ToList());
+            //var vehicles = await _context.Vehicles.Include(m => m.Make).Include(m => m.Model).Include(m => m.Features).ToListAsync();
+            var vehicles = await _unitOfWork.Vehicles.GetExtendedVehicles();
+            var result = _mapper.Map<List<Vehicle>, List<VehicleDto>>(vehicles);
             return Ok(result);
         }
 
@@ -55,8 +59,10 @@ namespace Vega.Controllers
             var vehicle =_mapper.Map<VehicleDto, Vehicle>(dto);
             vehicle.LastUpdate = DateTime.Now.ToUniversalTime();
 
-            _context.Vehicles.Add(vehicle);
-            await _context.SaveChangesAsync();
+            //_context.Vehicles.Add(vehicle);
+            //await _context.SaveChangesAsync();
+            _unitOfWork.Vehicles.Add(vehicle);
+            await _unitOfWork.CompleteAsync();
 
             var result = _mapper.Map<Vehicle, VehicleDto>(vehicle);
             return Ok(result);
@@ -69,7 +75,8 @@ namespace Vega.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            Vehicle vehicle = await _context.Vehicles.Include(m => m.Features).SingleOrDefaultAsync(m => m.Id == id);
+            //var vehicle = await _context.Vehicles.Include(m => m.Features).SingleOrDefaultAsync(m => m.Id == id);
+            var vehicle = await _unitOfWork.Vehicles.GetExtendedVehicle(id);
 
             if (vehicle == null)
                 return NotFound();
@@ -77,7 +84,8 @@ namespace Vega.Controllers
             _mapper.Map(dto, vehicle);
             vehicle.LastUpdate = DateTime.Now.ToUniversalTime();
 
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
+            await _unitOfWork.CompleteAsync();
 
             var result = _mapper.Map<Vehicle, VehicleDto>(vehicle);
             return Ok(result);
@@ -87,13 +95,16 @@ namespace Vega.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            Vehicle vehicle = await _context.Vehicles.FindAsync(id);
+            //var vehicle = await _context.Vehicles.FindAsync(id);
+            var vehicle = await _unitOfWork.Vehicles.GetAsync(id);
 
             if (vehicle == null)
                 return NotFound();
 
-            _context.Remove(vehicle);
-            await _context.SaveChangesAsync();
+            //_context.Remove(vehicle);
+            //await _context.SaveChangesAsync();
+            _unitOfWork.Vehicles.Remove(vehicle);
+            await _unitOfWork.CompleteAsync();
 
             return Ok(id);
         }

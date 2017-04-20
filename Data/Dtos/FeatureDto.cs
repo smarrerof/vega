@@ -1,4 +1,4 @@
-﻿namespace WebApplicationBasic.Data.Dtos
+﻿namespace vega.Data.Dtos
 {
     public class FeatureDto
     {

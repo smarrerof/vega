@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace WebApplicationBasic.Data.Dtos
+namespace vega.Data.Dtos
 {
     public class MakeDto
     {

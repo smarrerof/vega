@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -5,11 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using WebApplicationBasic.Data;
-using AutoMapper;
+using vega.Data;
+using vega.Data.Interfaces;
+using vega.Data.Repositories;
 
-
-namespace WebApplicationBasic
+namespace vega
 {
     public class Startup
     {
@@ -32,7 +33,10 @@ namespace WebApplicationBasic
             services.AddDbContext<VegaDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddAutoMapper(typeof(Startup));
-            services.AddMvc();            
+            services.AddMvc();
+
+            // Add application services.
+            services.AddTransient<IUnitOfWork, UnitOfWork>();      
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

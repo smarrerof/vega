@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using System.Linq;
-using WebApplicationBasic.Data.Dtos;
-using WebApplicationBasic.Data.Models;
+using vega.Data.Dtos;
+using vega.Data.Models;
 
-namespace WebApplicationBasic.Profiles
+namespace vega.Profiles
 {
     public class MappingProfile : Profile
     {
@@ -11,7 +11,8 @@ namespace WebApplicationBasic.Profiles
         {
             // Domain to DTOs
             CreateMap<Feature, FeatureDto>();
-            CreateMap<Make, MakeDto>();
+            CreateMap<Make, MakeDto>()
+                .ForMember(dest => dest.Models, opt => opt.Ignore());
             CreateMap<Model, ModelDto>();
             CreateMap<Vehicle, VehicleDto>()
                 .ForMember(
@@ -22,6 +23,8 @@ namespace WebApplicationBasic.Profiles
             // DTOs to Domain
             CreateMap<VehicleDto, Vehicle>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Make, opt => opt.Ignore())
+                .ForMember(dest => dest.Model, opt => opt.Ignore())
                 .ForMember(dest => dest.Features, opt => opt.Ignore())
                 .AfterMap((vr, v) => {
                     // Remove unselected features
