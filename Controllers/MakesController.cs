@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using vega.Data;
-using vega.Data.Dtos;
-using vega.Data.Models;
+using vega.Persistence;
+using vega.Controllers.Resources;
+using vega.Core.Models;
+
 
 namespace Vega.Controllers
 {
@@ -24,10 +25,10 @@ namespace Vega.Controllers
 
         // GET: api/makes
         [HttpGet]
-        public IEnumerable<MakeDto> GetMakes()
+        public IEnumerable<MakeResource> GetMakes()
         {
             var makes = _context.Makes.Include(m => m.Models).ToList();
-            return _mapper.Map<List<Make>, List<MakeDto>>(makes);
+            return _mapper.Map<List<Make>, List<MakeResource>>(makes);
         }
     }
 }

@@ -4,22 +4,18 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace vega.Data.Models
+namespace vega.Core.Models
 {
     [Table("Vehicles")]
     public class Vehicle
     {
         public int Id { get; set; }
-
-        public int MakeId { get; set; }
-
         [Required]
-        public int ModelId { get; set; }
-
+        public int ModelId { get; set; }     
+        public Model Model { get; set; }
         public bool IsRegistered { get; set; }
-
         public ICollection<VehicleFeature> Features { get; set; }
-
+        
         [Required]
         [StringLength(255)]
         public string ContactName { get; set; }
@@ -30,14 +26,8 @@ namespace vega.Data.Models
 
         [StringLength(255)]
         public string ContactEmail { get; set; }
-
         public DateTime LastUpdate { get; set; }
         
-        // Navigation properties
-        public Make Make { get; set; }
-
-        public Model Model { get; set; }
-
         public Vehicle()
         {
             Features = new Collection<VehicleFeature>();

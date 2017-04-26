@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace vega.Data.Models
+namespace vega.Core.Models
 {
     [Table("Features")]
     public class Feature
@@ -12,13 +12,6 @@ namespace vega.Data.Models
 
         [StringLength(255)]
         [Required]
-        public string Name { get; set; }
-
-        public ICollection<VehicleFeature> FeatureVehicles { get; set; }
-
-        public Feature()
-        {
-            FeatureVehicles = new Collection<VehicleFeature>();
-        }
+        public string Name { get; set; }    
     }
 }

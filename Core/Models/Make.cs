@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace vega.Data.Models
+namespace vega.Core.Models
 {
     [Table("Makes")]
     public class Make
@@ -17,12 +17,9 @@ namespace vega.Data.Models
         // Navigation properties
         public ICollection<Model> Models { get; set; }
 
-        public ICollection<Vehicle> Vehicles { get; set; }
-
         public Make()
         {
             Models = new Collection<Model>();
-            Vehicles = new Collection<Vehicle>();
         }
     }
 }

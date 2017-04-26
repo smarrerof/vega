@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace vega.Controllers
 {
     public class HomeController : Controller

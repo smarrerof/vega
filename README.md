@@ -21,8 +21,3 @@ dotnet watch run
 dotnet ef migrations add <MigrationName>
 dotnet ef database update
 ```
-
-### Challenge 1
-Build the following API endpoints:
-* /api/makes
-* /api/features

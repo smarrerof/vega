@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -65,24 +66,17 @@ namespace Vega.Migrations
                     ContactPhone = table.Column<string>(maxLength: 255, nullable: false),
                     IsRegistered = table.Column<bool>(nullable: false),
                     LastUpdate = table.Column<DateTime>(nullable: false),
-                    MakeId = table.Column<int>(nullable: false),
                     ModelId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vehicles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Vehicles_Makes_MakeId",
-                        column: x => x.MakeId,
-                        principalTable: "Makes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Vehicles_Models_ModelId",
                         column: x => x.ModelId,
                         principalTable: "Models",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,11 +106,6 @@ namespace Vega.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Models_MakeId",
                 table: "Models",
-                column: "MakeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Vehicles_MakeId",
-                table: "Vehicles",
                 column: "MakeId");
 
             migrationBuilder.CreateIndex(
